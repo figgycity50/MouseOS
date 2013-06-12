@@ -1,0 +1,106 @@
+os.LoadAPI("stringutils")
+function hello()
+print("Hello world!")
+end
+function reboot(colors.yellow,colors.white,colors.green,colors.blue,"Reboot")
+drawScreen()
+print("Rebooting...")
+sleep(5)
+os.reboot()
+end
+function login(username,password)
+while true do
+user = fs.open(username,"r")
+usernamerealue = user.readAll()
+usernamereal = stringutils.fromBinary(usernamerealue)
+user.close()
+term.clear()
+pass = fs.open(password,"r")
+passwordrealue = pass.readAll()
+passwordreal = stringutils.fromBinary(passwordrealue)
+pass.close()
+drawScreen(colors.yellow,colors.white,colors.green,colors.blue,"Login","Username:"," ","Password:"," ") -- 3 5
+term.setCursorPos(1,3)
+userusername = read()
+term.setCursorPos(1,5)
+userpassword = read('*')
+if userusername == usernamereal then
+if userpassword == passwordreal then
+home()
+break
+else
+print("User right but password wrong!")
+sleep(5)
+end
+else
+print("User wrong!")
+sleep(5)
+end
+end
+end
+function drawScreen(color1,color2,color3,color4,title,value1,value2,value3,value4,value5)
+term.setBackgroundColor(color1)
+term.clear()
+term.setTextColor(color2)
+term.setCursorPos(19,1)
+term.setBackgroundColor(color4)
+term.clearLine()
+print(title)
+if value1 then
+term.setCursorPos(19,2)
+term.setBackgroundColor(color3)
+term.clearLine()
+print(value1)
+end
+if value2 then
+term.setCursorPos(19,3)
+term.setBackgroundColor(color3)
+term.clearLine()
+print(value2)
+end
+if value3 then
+term.setCursorPos(19,4)
+term.setBackgroundColor(color3)
+term.clearLine()
+print(value3)
+end
+if value4 then
+term.setCursorPos(19,5)
+term.setBackgroundColor(color3)
+term.clearLine()
+print(value4)
+end
+if value5 then
+term.setCursorPos(19,6)
+term.setBackgroundColor(color3)
+term.clearLine()
+print(value5)
+end
+end
+function home()
+drawScreen(colors.yellow,colors.white,colors.green,colors.blue,"Actions")
+while true do
+event, x, y = os.pullEvent("mouse_click")
+if y == 1 then
+apps()
+break
+end
+end
+end
+function apps()
+drawScreen(colors.yellow,colors.white,colors.green,colors.blue,"Programs","FilesApp")
+while true do
+event, x, y = os.pullEvent("mouse_click")
+if y == 2 then
+files()
+end
+end
+end
+function files()
+directory = ""
+drawScreen(colors.orange,colors.white,colors.blue,colors.red,"My Files")
+term.setCursorPos(1,2)
+files = fs.list(directory)
+filelist = textutils.serialize(files)
+print(filelist)
+end
